@@ -76,7 +76,7 @@ CREATE PROC usp_TransferMoney (@senderId INT, @receiverId  INT, @moneyAmount MON
 AS
 BEGIN TRAN
     IF(@moneyAmount < 0)
-        BEGIN
+    BEGIN
             RAISERROR('Amount should be positite number!', 16, 1);
             ROLLBACK;
             RETURN;
