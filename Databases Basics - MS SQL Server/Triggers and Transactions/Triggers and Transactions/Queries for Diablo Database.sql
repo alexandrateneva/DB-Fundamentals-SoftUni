@@ -51,3 +51,4 @@ SELECT Name AS [Item Name]
 FROM Items
 WHERE Id IN (SELECT ItemId FROM UserGameItems WHERE UserGameId = @userGameID)
 ORDER BY [Item Name]
+
