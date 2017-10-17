@@ -3,9 +3,9 @@ USE Geography
 -- Problem 12
 
 SELECT mc.CountryCode,
-	   m.MountainRange,
-	   p.PeakName,
-	   p.Elevation
+       m.MountainRange,
+       p.PeakName,
+       p.Elevation
 FROM MountainsCountries AS mc
 INNER JOIN Mountains AS m
 ON mc.MountainId = m.Id
@@ -17,7 +17,7 @@ ORDER BY p.Elevation DESC
 -- Problem 13
 
 SELECT mc.CountryCode,
-	   COUNT(*)
+       COUNT(*)
 FROM MountainsCountries AS mc
 INNER JOIN Mountains AS m
 ON mc.MountainId = m.Id
@@ -27,7 +27,7 @@ GROUP BY mc.CountryCode
 -- Problem 14
 
 SELECT TOP(5) c.CountryName, 
-			  r.RiverName
+	      r.RiverName
 FROM Countries AS c
 LEFT OUTER JOIN CountriesRivers AS cr
 ON c.CountryCode = cr.CountryCode
@@ -35,24 +35,24 @@ LEFT OUTER JOIN Rivers AS r
 ON cr.RiverId = r.Id
 WHERE c.ContinentCode = 
 	   (SELECT cont.ContinentCode 
-		FROM Continents AS cont 
-		WHERE cont.ContinentName = 'Africa')
+	    FROM Continents AS cont 
+	    WHERE cont.ContinentName = 'Africa')
 ORDER BY c.CountryName
 
 -- Problem 15 - 1
 
 SELECT usages.ContinentCode, usages.CurrencyCode, usages.CurrancyUsage
 FROM (
-	  SELECT ContinentCode, CurrencyCode, COUNT(*) AS CurrancyUsage
-	  FROM Countries AS c
+      SELECT ContinentCode, CurrencyCode, COUNT(*) AS CurrancyUsage
+      FROM Countries AS c
       GROUP BY ContinentCode, CurrencyCode
-	  HAVING COUNT(*) > 1
+      HAVING COUNT(*) > 1
 ) AS usages
 INNER JOIN (
 SELECT usages.ContinentCode, MAX(usages.Usage) AS MaxUsage 
 FROM (
       SELECT ContinentCode, CurrencyCode, COUNT(*) AS Usage 
-	  FROM Countries AS c
+      FROM Countries AS c
       GROUP BY ContinentCode, CurrencyCode
       ) AS usages
       GROUP BY usages.ContinentCode
@@ -86,8 +86,8 @@ WHERE mc.CountryCode IS NULL
 -- Problem 17
 
 SELECT TOP(5) c.CountryName,
-			  MAX(p.Elevation) AS HighestPeakElevation,	   
-			  MAX(r.Length) AS LongestRiverLength
+	      MAX(p.Elevation) AS HighestPeakElevation,	   
+	      MAX(r.Length) AS LongestRiverLength
 FROM Countries AS c
 LEFT OUTER JOIN MountainsCountries AS mc
 ON c.CountryCode = mc.CountryCode
@@ -105,9 +105,9 @@ ORDER BY HighestPeakElevation DESC, LongestRiverLength DESC, c.CountryName
 -- Problem 18
 
 SELECT TOP (5) WITH TIES c.CountryName, 
-						 ISNULL(p.PeakName, '(no highest peak)') AS HighestPeakName,
-						 ISNULL(MAX(p.Elevation), 0) AS HighestPeakElevation,
-						 ISNULL(m.MountainRange, '(no mountain)') AS Mountain
+			 ISNULL(p.PeakName, '(no highest peak)') AS HighestPeakName,
+			 ISNULL(MAX(p.Elevation), 0) AS HighestPeakElevation,
+			 ISNULL(m.MountainRange, '(no mountain)') AS Mountain
 FROM Countries AS c
 LEFT OUTER JOIN MountainsCountries AS mc
 ON c.CountryCode = mc.CountryCode
