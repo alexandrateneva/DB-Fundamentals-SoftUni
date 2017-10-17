@@ -55,16 +55,16 @@ AS
 BEGIN
 	DECLARE @result varchar(7)
 	SET @result = CASE
-				  WHEN @salary < 30000 THEN 'Low' 
+	 	      WHEN @salary < 30000 THEN 'Low' 
 	              WHEN @salary >= 30000 AND @salary <= 50000 THEN 'Average'
 	              WHEN @salary > 50000 THEN 'High' 
-				  END
+		      END
 	RETURN @result
 END
 GO
 
 SELECT Salary,
-	   dbo.ufn_GetSalaryLevel(Salary) AS [Salary Level] 
+       dbo.ufn_GetSalaryLevel(Salary) AS [Salary Level] 
 FROM Employees
 
 -- Problem 6
@@ -93,7 +93,7 @@ BEGIN
 		SET @counter = @counter + 1
 			IF (NOT CHARINDEX(@currentLetter, @setOfLetters, 1) > 0)
 			BEGIN  
-			RETURN 0 
+			  RETURN 0 
 			END 
 		END	
 	RETURN 1
@@ -134,7 +134,7 @@ WHERE e.DepartmentID = @departmentId
 
 ALTER TABLE Departments
 ALTER COLUMN ManagerID int NULL
-
+Format the code
 DELETE FROM EmployeesProjects
 WHERE EmployeeID IN (SELECT Id FROM @delTargets)
 
