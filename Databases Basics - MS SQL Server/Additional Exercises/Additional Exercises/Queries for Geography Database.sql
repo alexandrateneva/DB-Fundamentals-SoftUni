@@ -20,9 +20,9 @@ ORDER BY PeakName, CountryName
 -- Problem 10
 
 SELECT  CountryName,
-	   ContinentName, 
-	   ISNULL((COUNT(r.Id)), 0) AS RiversCount,
-	   ISNULL(SUM(r.Length), 0) AS TotalLength
+	ContinentName, 
+	ISNULL((COUNT(r.Id)), 0) AS RiversCount,
+	ISNULL(SUM(r.Length), 0) AS TotalLength
 FROM Countries AS c
 INNER JOIN Continents AS cont ON c.ContinentCode = cont.ContinentCode
 LEFT OUTER JOIN CountriesRivers AS cr ON c.CountryCode = cr.CountryCode
@@ -33,8 +33,8 @@ ORDER BY RiversCount DESC, TotalLength DESC, CountryName
 -- Problem 11
 
 SELECT  curr.CurrencyCode, 
-	   curr.Description AS Currency, 
-	   COUNT(c.CountryCode) AS NumberOfCountries
+	curr.Description AS Currency, 
+	COUNT(c.CountryCode) AS NumberOfCountries
 FROM Currencies AS curr
 LEFT OUTER JOIN Countries AS c ON c.CurrencyCode = curr.CurrencyCode
 GROUP BY curr.CurrencyCode, curr.Description
@@ -43,8 +43,8 @@ ORDER BY NumberOfCountries DESC, curr.Description
 -- Problem 12
 
 SELECT  cont.ContinentName,
-	   SUM(CAST(c.AreaInSqKm AS BIGINT)) AS CountriesArea,
-	   SUM(CAST(c.Population AS BIGINT)) AS CountriesPopulation
+	SUM(CAST(c.AreaInSqKm AS BIGINT)) AS CountriesArea,
+	SUM(CAST(c.Population AS BIGINT)) AS CountriesPopulation
 FROM Continents AS cont
 LEFT OUTER JOIN Countries AS c ON cont.ContinentCode = c.ContinentCode
 GROUP BY cont.ContinentName
@@ -60,9 +60,9 @@ CountryCode char(2) FOREIGN KEY REFERENCES Countries(CountryCode)
 )
 
 INSERT INTO Monasteries(Name, CountryCode) VALUES
-('Rila Monastery “St. Ivan of Rila”', 'BG'), 
-('Bachkovo Monastery “Virgin Mary”', 'BG'),
-('Troyan Monastery “Holy Mother''s Assumption”', 'BG'),
+('Rila Monastery â€œSt. Ivan of Rilaâ€', 'BG'), 
+('Bachkovo Monastery â€œVirgin Maryâ€', 'BG'),
+('Troyan Monastery â€œHoly Mother''s Assumptionâ€', 'BG'),
 ('Kopan Monastery', 'NP'),
 ('Thrangu Tashi Yangtse Monastery', 'NP'),
 ('Shechen Tennyi Dargyeling Monastery', 'NP'),
@@ -85,10 +85,10 @@ ADD IsDeleted bit DEFAULT 0 NOT NULL
 UPDATE Countries
 SET IsDeleted = 1
 WHERE CountryCode IN (SELECT c.CountryCode 
-				 FROM Countries AS c
-				 INNER JOIN CountriesRivers AS cr ON c.CountryCode = cr.CountryCode
-				 GROUP BY c.CountryCode
-				 HAVING COUNT(cr.RiverId) > 3)
+		     FROM Countries AS c
+		     INNER JOIN CountriesRivers AS cr ON c.CountryCode = cr.CountryCode
+		     GROUP BY c.CountryCode
+		     HAVING COUNT(cr.RiverId) > 3)
 
 SELECT m.Name AS Monastery, c.CountryName AS Country
 FROM Monasteries AS m
@@ -100,21 +100,21 @@ ORDER BY Monastery
 
 INSERT INTO Monasteries
 VALUES  ('Hanga Abbey', (SELECT CountryCode 
-					FROM Countries 
-					WHERE CountryName = 'Tanzania')),
-	   ('Myin-Tin-Daik',(SELECT CountryCode 
-					FROM Countries 
-					WHERE CountryName = 'Myanmar'))
+			 FROM Countries 
+			 WHERE CountryName = 'Tanzania')),
+	('Myin-Tin-Daik',(SELECT CountryCode 
+			  FROM Countries 
+			  WHERE CountryName = 'Myanmar'))
 
 UPDATE Countries
 SET CountryName = 'Burma'
 WHERE CountryCode = (SELECT CountryCode 
-				FROM Countries 
-				WHERE CountryName = 'Myanmar')
+		     FROM Countries 
+		     WHERE CountryName = 'Myanmar')
 
 SELECT  cont.ContinentName, 
-	   c.CountryName, 
-	   COUNT(m.Name) AS MonasteriesCount
+	c.CountryName, 
+	COUNT(m.Name) AS MonasteriesCount
 FROM Continents AS cont
 INNER JOIN Countries AS c ON cont.ContinentCode = c.ContinentCode
 LEFT OUTER JOIN Monasteries AS m ON c.CountryCode = m.CountryCode
