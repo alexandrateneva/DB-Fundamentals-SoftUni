@@ -50,8 +50,7 @@ ORDER BY EmployeeID
 SELECT e.FirstName, e.LastName, e.HireDate, d.Name FROM Employees AS e
 INNER JOIN Departments AS d
 ON e.DepartmentID = d.DepartmentID
-WHERE (d.Name = 'Sales' OR d.Name = 'Finance')
-	  AND e.HireDate > '1/1/1999'
+WHERE (d.Name = 'Sales' OR d.Name = 'Finance') AND e.HireDate > '1/1/1999'
 ORDER BY HireDate
 
 -- Project 7
@@ -62,15 +61,14 @@ INNER JOIN EmployeesProjects AS ep
 ON e.EmployeeID = ep.EmployeeID
 INNER JOIN Projects AS p
 ON ep.ProjectID = p.ProjectID
-WHERE p.StartDate > '2002-08-13 00:00:00' 
-	  AND p.EndDate IS NULL
+WHERE p.StartDate > '2002-08-13 00:00:00' AND p.EndDate IS NULL
 ORDER BY e.EmployeeID
 
 -- Project 8
 
 SELECT e.EmployeeID,
-	   e.FirstName,
-	   ProjectName = CASE WHEN p.StartDate > '2005' THEN NULL ELSE p.Name END
+       e.FirstName,
+       ProjectName = CASE WHEN p.StartDate > '2005' THEN NULL ELSE p.Name END
 FROM Employees AS e
 INNER JOIN EmployeesProjects AS ep
 ON e.EmployeeID = ep.EmployeeID
@@ -90,9 +88,9 @@ ORDER BY e.EmployeeID
 -- Project 10
 
 SELECT TOP(50) e.EmployeeID,
-			   e.FirstName + ' ' + e.LastName AS EmployeeName,
-			   emp.FirstName + ' ' + emp.LastName AS ManagerName, 
-			   d.Name AS DepartmentName
+	       e.FirstName + ' ' + e.LastName AS EmployeeName,
+	       emp.FirstName + ' ' + emp.LastName AS ManagerName, 
+	       d.Name AS DepartmentName
 FROM Employees AS e
 INNER JOIN Employees AS emp
 ON e.ManagerID = emp.EmployeeID
@@ -103,8 +101,9 @@ ORDER BY e.EmployeeID
 -- Project 11
 
 SELECT MIN(AverageSalaries.Salary) AS MinAverageSalary
-FROM 
-	(SELECT AVG(e.Salary) AS Salary,
-		    e.DepartmentId 
+FROM (
+	SELECT AVG(e.Salary) AS Salary,
+	       e.DepartmentId 
 	FROM Employees AS e 
-	GROUP BY DepartmentID) AS AverageSalaries
+	GROUP BY DepartmentID
+) AS AverageSalaries
