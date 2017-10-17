@@ -3,7 +3,7 @@ USE Diablo
 -- Problem 1
 
 SELECT  SUBSTRING(Email, CHARINDEX('@', Email) + 1, LEN(Email)) AS [Email Provider],
-	   COUNT(*) AS [Number Of Users]
+	COUNT(*) AS [Number Of Users]
 FROM Users
 GROUP BY SUBSTRING(Email, CHARINDEX('@', Email) + 1, LEN(Email))
 ORDER BY [Number Of Users] DESC, [Email Provider] ASC
@@ -11,11 +11,11 @@ ORDER BY [Number Of Users] DESC, [Email Provider] ASC
 -- Problem 2
 
 SELECT  g.Name AS [Game],
-	   gt.Name AS [Game Type],
-	   u.Username,
-	   ug.Level,
-	   ug.Cash,
-	   ch.Name AS [Character]
+	gt.Name AS [Game Type],
+	u.Username,
+	ug.Level,
+	ug.Cash,
+	ch.Name AS [Character]
 FROM Users AS u
 INNER JOIN UsersGames AS ug ON u.Id = ug.UserId
 INNER JOIN Games AS g ON ug.GameId = g.Id
@@ -26,9 +26,9 @@ ORDER BY ug.Level DESC, U.Username, g.Name
 -- Problem 3
 
 SELECT  u.Username,
-	   g.Name AS [Game],
-	   COUNT(ugi.ItemId) AS [Items Count],
-	   SUM(i.Price) AS [Items Price]
+	g.Name AS [Game],
+	COUNT(ugi.ItemId) AS [Items Count],
+	SUM(i.Price) AS [Items Price]
 FROM Users AS u
 INNER JOIN UsersGames AS ug ON u.Id = ug.UserId
 INNER JOIN UserGameItems AS ugi ON ug.Id = ugi.UserGameId
@@ -41,14 +41,14 @@ ORDER BY [Items Count] DESC, [Items Price] DESC, u.Username
 -- Problem 4
 
 SELECT  u.Username,
-	   g.Name AS [Game],
-	   MAX(ch.Name) AS [Character],
-	   (SUM(s2.Strength) + MAX(s1.Strength) + MAX(s.Strength)) AS [Strength],
-	   (SUM(s2.Defence) + MAX(s1.Defence) + MAX(s.Defence)) AS [Defence],
-	   (SUM(s2.Speed) + MAX(s1.Speed) + MAX(s.Speed)) AS [Speed],
-	   (SUM(s2.Mind) + MAX(s1.Mind) + MAX(s.Mind)) AS [Mind],
-	   (SUM(s2.Luck) + MAX(s1.Luck) + MAX(s.Luck)) AS [Luck]
-FROM Users AS u
+	g.Name AS [Game],
+	MAX(ch.Name) AS [Character],
+	(SUM(s2.Strength) + MAX(s1.Strength) + MAX(s.Strength)) AS [Strength],
+	(SUM(s2.Defence) + MAX(s1.Defence) + MAX(s.Defence)) AS [Defence],
+	(SUM(s2.Speed) + MAX(s1.Speed) + MAX(s.Speed)) AS [Speed],
+	(SUM(s2.Mind) + MAX(s1.Mind) + MAX(s.Mind)) AS [Mind],
+	(SUM(s2.Luck) + MAX(s1.Luck) + MAX(s.Luck)) AS [Luck]
+FROM UseAS u
 INNER JOIN UsersGames AS ug ON u.Id = ug.UserId
 INNER JOIN Games AS g ON ug.GameId = g.Id
 INNER JOIN GameTypes AS gt ON g.GameTypeId = gt.Id
@@ -89,28 +89,28 @@ DECLARE @userID int = (SELECT Id FROM Users WHERE Username = 'Alex')
 DECLARE @gameID int = (SELECT Id FROM Games WHERE Name = 'Edinburgh')
 DECLARE @usersGameID int = (SELECT Id FROM UsersGames WHERE UserId = @userID AND GameId = @gameID)
 DECLARE @neededMoney money = (SELECT SUM(Price) 
-						FROM Items AS i
-						WHERE i.Name IN ('Blackguard', 'Bottomless Potion of Amplification',
-						'Eye of Etlich (Diablo III)', 'Gem of Efficacious Toxin',
-						'Golden Gorget of Leoric', 'Hellfire Amulet'))
+			      FROM Items AS i
+			      WHERE i.Name IN ('Blackguard', 'Bottomless Potion of Amplification',
+			      		       'Eye of Etlich (Diablo III)', 'Gem of Efficacious Toxin',
+			      		       'Golden Gorget of Leoric', 'Hellfire Amulet'))
 
 INSERT INTO UserGameItems 
 SELECT i.Id, @usersGameID
 FROM Items AS i
 WHERE i.Name IN ('Blackguard', 'Bottomless Potion of Amplification',
-			  'Eye of Etlich (Diablo III)', 'Gem of Efficacious Toxin',
-			  'Golden Gorget of Leoric', 'Hellfire Amulet')
+	   	 'Eye of Etlich (Diablo III)', 'Gem of Efficacious Toxin',
+	   	 'Golden Gorget of Leoric', 'Hellfire Amulet')
 
 UPDATE UsersGames
 SET Cash = Cash - @neededMoney
 WHERE Id = @usersGameID
 
 IF(@neededMoney > (SELECT Cash FROM UsersGames WHERE Id = @usersGameID))
-	BEGIN
-	  RAISERROR('There is not enough cash to buy these items!', 16, 1)
-	  ROLLBACK
-	  RETURN
-	END
+BEGIN
+   RAISERROR('There is not enough cash to buy these items!', 16, 1)
+   ROLLBACK
+   RETURN
+END
 
 SELECT u.Username, g.Name, ug.Cash, i.Name AS [Item Name]
 FROM Users AS u
