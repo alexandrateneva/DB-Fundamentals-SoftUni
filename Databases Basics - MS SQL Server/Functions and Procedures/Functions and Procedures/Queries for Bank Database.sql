@@ -30,8 +30,8 @@ AS
 SELECT ah.FirstName AS [First Name], ah.LastName AS [Last Name]
 FROM AccountHolders AS ah
 INNER JOIN (SELECT AccountHolderId, SUM(Balance) AS TotalBalance
-			FROM Accounts 
-			GROUP BY AccountHolderId) AS a
+	    FROM Accounts 
+	    GROUP BY AccountHolderId) AS a
 ON ah.Id = a.AccountHolderId
 WHERE a.TotalBalance > @number
 
@@ -50,9 +50,9 @@ GO
 
 DECLARE @ret money
 EXEC @ret = dbo.ufn_CalculateFutureValue
-			@sum = 1000,
-			@yearlyInterestRate = 0.1,
-			@years = 5
+	    @sum = 1000,
+	    @yearlyInterestRate = 0.1,
+	    @years = 5
 SELECT @ret AS [Future Value]
 
 -- Problem 12
@@ -61,14 +61,14 @@ GO
 CREATE PROC usp_CalculateFutureValueForAccount (@accountID int, @yearlyInterestRate float)
 AS
 SELECT  a.Id AS [Account Id],
-		ah.FirstName AS [First Name],
-		ah.LastName AS [Last Name],
-		a.Balance AS [Current Balance],
-		dbo.ufn_CalculateFutureValue (a.Balance, @yearlyInterestRate, 5) AS [Balance in 5 years]
+	ah.FirstName AS [First Name],
+	ah.LastName AS [Last Name],
+	a.Balance AS [Current Balance],
+	dbo.ufn_CalculateFutureValue (a.Balance, @yearlyInterestRate, 5) AS [Balance in 5 years]
 FROM AccountHolders AS ah
 INNER JOIN  Accounts AS a 
 ON ah.Id = a.AccountHolderId
 WHERE a.Id = @accountID
 
 EXEC usp_CalculateFutureValueForAccount @accountID = 1,
-										@yearlyInterestRate = 0.1
+					@yearlyInterestRate = 0.1
