@@ -158,10 +158,10 @@ SELECT f.ProductId,
 FROM Feedbacks AS f
 INNER JOIN Customers AS c ON f.CustomerId = c.Id
 WHERE c.Id IN (SELECT c.Id
-		    FROM Feedbacks AS f
-		    INNER JOIN Customers AS c ON f.CustomerId = c.Id
-		    GROUP BY c.Id
-		    HAVING COUNT(f.Id) >= 3)
+	       FROM Feedbacks AS f
+	       INNER JOIN Customers AS c ON f.CustomerId = c.Id
+	       GROUP BY c.Id
+	       HAVING COUNT(f.Id) >= 3)
 ORDER BY ProductId, CustomerName, f.Id
 
 -- 12. Customers by Criteria
@@ -176,26 +176,26 @@ ORDER BY cust.FirstName, cust.Age DESC
 -- 13. Middle Range Distributors
 
 SELECT d.Name AS DistributorName, 
-	  i.Name AS IngredientName,
-	  p.Name AS ProductName,
-	  AVG(f.Rate) AS AverageRate
+       i.Name AS IngredientName,
+       p.Name AS ProductName,
+       AVG(f.Rate) AS AverageRate
 FROM Distributors AS d
 INNER JOIN Ingredients AS i ON d.Id = i.DistributorId
 INNER JOIN ProductsIngredients AS pi ON i.Id = pi.IngredientId
 INNER JOIN Products AS p ON pi.ProductId = p.Id
 INNER JOIN Feedbacks AS f ON p.Id = f.ProductId
 WHERE p.Id IN (SELECT p.Id 
-			FROM Products AS p
-			INNER JOIN Feedbacks AS f ON p.Id = f.ProductId
-			GROUP BY p.Id
-			HAVING AVG(f.Rate) BETWEEN 5 AND 8)
+	       FROM Products AS p
+	       INNER JOIN Feedbacks AS f ON p.Id = f.ProductId
+	       GROUP BY p.Id
+	       HAVING AVG(f.Rate) BETWEEN 5 AND 8)
 GROUP BY d.Name, i.Name, p.Name 
 ORDER BY DistributorName, IngredientName, ProductName
 
 -- 14. The Most Positive Country
 
 SELECT TOP (1) WITH TIES c.Name AS CountryName, 
-					AVG(f.Rate) AS FeedbackRate
+			 AVG(f.Rate) AS FeedbackRate
 FROM Countries AS c
 INNER JOIN Customers AS cust ON c.Id = cust.CountryId
 INNER JOIN Feedbacks AS f ON cust.Id = f.CustomerId
@@ -213,8 +213,8 @@ FROM
            COUNT(i.DistributorId) AS IngredientsByDistributor,
            DENSE_RANK() OVER(PARTITION BY c.Name ORDER BY COUNT(i.DistributorId) DESC) AS Rank
     FROM Countries AS c
-         LEFT JOIN Distributors AS d ON d.CountryId = c.Id
-         LEFT JOIN Ingredients AS i ON i.DistributorId = d.Id
+    LEFT OUTER JOIN Distributors AS d ON d.CountryId = c.Id
+    LEFT OUTER JOIN Ingredients AS i ON i.DistributorId = d.Id
     GROUP BY c.Name,
              d.Name
 ) AS ranked
@@ -228,9 +228,9 @@ GO
 CREATE VIEW v_UserWithCountries 
 AS
 SELECT CONCAT(cust.FirstName, ' ', cust.LastName) AS CustomerName,
-	 cust.Age, 
-	 cust.Gender, 
-	 c.Name AS CountryName
+       cust.Age, 
+       cust.Gender, 
+       c.Name AS CountryName
 FROM Customers AS cust
 LEFT OUTER JOIN Countries AS c ON cust.CountryId = c.Id
 GO
@@ -264,11 +264,11 @@ GROUP BY p.Name
 SET @resultInNumber = (SELECT TOP (1) Rate FROM @productsRates WHERE NameOfProduct = @productName)
 
 SET @resultAsWord = CASE   
-				    WHEN @resultInNumber < 5 THEN 'Bad'   
-				    WHEN @resultInNumber >= 5 AND @resultInNumber <= 8 THEN 'Average' 
-				    WHEN @resultInNumber > 8 THEN 'Good'
-				    WHEN @resultInNumber IS NULL THEN 'No rating'
-				END
+		        WHEN @resultInNumber < 5 THEN 'Bad'   
+		        WHEN @resultInNumber >= 5 AND @resultInNumber <= 8 THEN 'Average' 
+		        WHEN @resultInNumber > 8 THEN 'Good'
+		        WHEN @resultInNumber IS NULL THEN 'No rating'
+		    END
 
 RETURN @resultAsWord
 END
@@ -282,9 +282,9 @@ ORDER BY Id
 
 GO
 CREATE PROC usp_SendFeedback (@customerId int,
-					     @productId int,
-						@rate decimal(4,2),
-						@description varchar(255))
+			      @productId int,
+			      @rate decimal(4,2),
+			      @description varchar(255))
 AS
 BEGIN TRANSACTION
 
@@ -328,11 +328,11 @@ SELECT p.Name AS ProductName,
        d.Name AS DistributorName,
        c.Name AS DistributorCountry
 FROM Products AS p
-     JOIN Feedbacks AS f ON f.ProductId = p.Id
-     JOIN ProductsIngredients AS pi ON pi.ProductId = p.Id
-     JOIN Ingredients AS i ON i.Id = pi.IngredientId
-     JOIN Distributors AS d ON d.Id = i.DistributorId
-     JOIN Countries AS c ON c.Id = d.CountryId
+INNER JOIN Feedbacks AS f ON f.ProductId = p.Id
+INNER JOIN ProductsIngredients AS pi ON pi.ProductId = p.Id
+INNER JOIN Ingredients AS i ON i.Id = pi.IngredientId
+INNER JOIN Distributors AS d ON d.Id = i.DistributorId
+INNER JOIN Countries AS c ON c.Id = d.CountryId
 GROUP BY p.Name,
          p.Id,
          d.Name,
@@ -341,8 +341,8 @@ HAVING p.Id IN
 (
     SELECT p.Id
     FROM Products AS p
-         JOIN ProductsIngredients AS pi ON pi.ProductId = p.Id
-         JOIN Ingredients AS i ON i.Id = pi.IngredientId
+    INNER JOIN ProductsIngredients AS pi ON pi.ProductId = p.Id
+    INNER JOIN Ingredients AS i ON i.Id = pi.IngredientId
     GROUP BY p.Name,
              p.Id
     HAVING COUNT(DISTINCT i.DistributorId) = 1
