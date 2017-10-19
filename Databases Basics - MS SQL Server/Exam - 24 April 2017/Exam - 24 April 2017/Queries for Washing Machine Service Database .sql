@@ -137,8 +137,8 @@ ORDER BY IssueDate, JobId
 -- 7. Mechanic Assignments
 
 SELECT CONCAT(m.FirstName, ' ', m.LastName) AS Mechanic,
-	  j.Status,
-	  j.IssueDate 
+       j.Status,
+       j.IssueDate 
 FROM Mechanics AS m
 LEFT OUTER JOIN Jobs AS j ON m.MechanicId = j.MechanicId
 ORDER BY m.MechanicId, j.IssueDate, j.JobId
@@ -146,8 +146,8 @@ ORDER BY m.MechanicId, j.IssueDate, j.JobId
 -- 8. Current Clients
 
 SELECT CONCAT(c.FirstName, ' ', c.LastName) AS Client,
-	  DATEDIFF(DAY, j.IssueDate, '2017-04-24') AS [Days going],
-	  j.Status
+       DATEDIFF(DAY, j.IssueDate, '2017-04-24') AS [Days going],
+       j.Status
 FROM Clients AS c
 LEFT OUTER JOIN Jobs AS j ON c.ClientId = j.ClientId
 WHERE j.Status <> 'Finished'
@@ -179,7 +179,7 @@ FROM Mechanics AS m
 LEFT OUTER JOIN Jobs AS j ON m.MechanicId = j.MechanicId
 GROUP BY CONCAT(m.FirstName, ' ', m.LastName), m.MechanicId
 HAVING COUNT(CASE WHEN Status = 'Finished' THEN NULL 
-			   WHEN  Status IS NULL THEN NULL 
+	          WHEN  Status IS NULL THEN NULL 
                   ELSE 1 END) = 0
 ORDER BY m.MechanicId
 
@@ -229,10 +229,10 @@ ORDER BY [Times Serviced] DESC
 -- 16. Missing Parts
 
 SELECT p.PartId,
-	  p.Description,
-	  SUM(pn.Quantity) AS Required,
-	  AVG(p.StockQty) AS [In Stock],
-	  ISNULL(SUM(op.Quantity),0) AS Ordered
+       p.Description,
+       SUM(pn.Quantity) AS Required,
+       AVG(p.StockQty) AS [In Stock],
+       ISNULL(SUM(op.Quantity),0) AS Ordered
 FROM Parts AS p
 INNER JOIN PartsNeeded AS pn ON pn.PartId = p.PartId
 INNER JOIN Jobs AS j ON j.JobId = pn.JobId
@@ -300,17 +300,17 @@ BEGIN
   END
   
   DECLARE @OrderId int = (SELECT o.OrderId FROM Orders AS o
-  				      JOIN OrderParts AS op ON op.OrderId = o.OrderId
-  				      JOIN Parts AS p ON p.PartId = op.PartId
-  				      WHERE JobId = @JobId AND p.PartId = @PartId AND IssueDate IS NULL)
+  		          JOIN OrderParts AS op ON op.OrderId = o.OrderId
+  		          JOIN Parts AS p ON p.PartId = op.PartId
+  		          WHERE JobId = @JobId AND p.PartId = @PartId AND IssueDate IS NULL)
   
   IF(@OrderId IS NULL)
   BEGIN
-  INSERT INTO Orders(JobId, IssueDate) 
-  VALUES (@JobId, NULL)
-  
-  INSERT INTO OrderParts(OrderId, PartId, Quantity) 
-  VALUES (IDENT_CURRENT('Orders'), @PartId, @Quantity)
+       INSERT INTO Orders(JobId, IssueDate) 
+       VALUES (@JobId, NULL)
+       
+       INSERT INTO OrderParts(OrderId, PartId, Quantity) 
+       VALUES (IDENT_CURRENT('Orders'), @PartId, @Quantity)
   END
   
   ELSE
@@ -319,15 +319,15 @@ BEGIN
   
   	IF(@PartExistanceOrder IS NULL)
   	BEGIN
-  		INSERT INTO OrderParts(OrderId, PartId, Quantity) 
-  		VALUES (@OrderId, @PartId, @Quantity)
+  	     INSERT INTO OrderParts(OrderId, PartId, Quantity) 
+  	     VALUES (@OrderId, @PartId, @Quantity)
   	END
   
   	ELSE
   	BEGIN
-  		UPDATE OrderParts
-  		SET Quantity += @Quantity
-  		WHERE OrderId = @OrderId AND PartId = @PartId
+  	     UPDATE OrderParts
+  	     SET Quantity += @Quantity
+  	     WHERE OrderId = @OrderId AND PartId = @PartId
   	END
   END
 END
@@ -342,13 +342,13 @@ DECLARE @NewStatus int = (SELECT Delivered FROM inserted)
 
 IF(@OldStatus = 0 AND @NewStatus = 1)
 BEGIN
-  UPDATE Parts
-  SET StockQty += op.Quantity
-  FROM Parts AS p
-  INNER JOIN OrderParts AS op ON op.PartId = p.PartId
-  INNER JOIN Orders AS o ON o.OrderId = op.OrderId
-  INNER JOIN inserted AS i ON i.OrderId = o.OrderId
-  INNER JOIN deleted AS d ON d.OrderId = i.OrderId
+     UPDATE Parts
+     SET StockQty += op.Quantity
+     FROM Parts AS p
+     INNER JOIN OrderParts AS op ON op.PartId = p.PartId
+     INNER JOIN Orders AS o ON o.OrderId = op.OrderId
+     INNER JOIN inserted AS i ON i.OrderId = o.OrderId
+     INNER JOIN deleted AS d ON d.OrderId = i.OrderId
 END
 
 UPDATE Orders
@@ -361,8 +361,8 @@ WITH CTE_Parts
 AS
 (
   SELECT m.MechanicId,
-  	   v.VendorId,
-  	   SUM(op.Quantity) AS VendorItems
+  	 v.VendorId,
+  	 SUM(op.Quantity) AS VendorItems
   FROM Mechanics AS m
   JOIN Jobs AS j ON j.MechanicId = m.MechanicId
   JOIN Orders AS o ON o.JobId = j.JobId
@@ -373,12 +373,12 @@ AS
 )
 
 SELECT CONCAT(m.FirstName, ' ', m.LastName) AS Mechanic,
-	   v.Name AS Vendor,
-	   c.VendorItems AS Parts,
-	   CAST(CAST(CAST(VendorItems AS decimal(6,2)) / (SELECT SUM(VendorItems) 
-	                                                 FROM CTE_Parts 
-										    WHERE MechanicId = c.MechanicId) * 100 AS int) 
-	                                                 AS varchar(MAX)) + '%' AS Preference
+       v.Name AS Vendor,
+       c.VendorItems AS Parts,
+       CAST(CAST(CAST(VendorItems AS decimal(6,2)) / (SELECT SUM(VendorItems) 
+	                                              FROM CTE_Parts 
+						      WHERE MechanicId = c.MechanicId) * 100 AS int) 
+	                                              AS varchar(MAX)) + '%' AS Preference
 FROM CTE_Parts AS c
 JOIN Mechanics AS m ON m.MechanicId = c.MechanicId
 JOIN Vendors AS v ON v.VendorId = c.VendorId
