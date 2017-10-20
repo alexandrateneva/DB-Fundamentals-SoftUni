@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<SqlWorkbenchSqlProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="Exam - 15 December 2016">
+  <Items>
+    <LogicalFolder Name="Connections" Type="2" Sorted="true">
+      <Items>
+        <ConnectionNode Name="DESKTOP-QGKSQ0S\SQLEXPRESS:DESKTOP-QGKSQ0S\home PC">
+          <Created>2017-10-20T11:23:06.6921017+03:00</Created>
+          <Type>SQL</Type>
+          <Server>DESKTOP-QGKSQ0S\SQLEXPRESS</Server>
+          <UserName />
+          <Authentication>Windows Authentication</Authentication>
+          <InitialDB>WMS</InitialDB>
+          <LoginTimeout>30</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName>Microsoft SQL Server Management Studio - Query</ApplicationName>
+        </ConnectionNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Queries" Type="0" Sorted="true">
+      <Items>
+        <FileNode Name="Queries for The Nerd Herd Database.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-QGKSQ0S\SQLEXPRESS:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-QGKSQ0S\SQLEXPRESS</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Queries for The Nerd Herd Database.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Skeleton.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:DESKTOP-QGKSQ0S\SQLEXPRESS:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>DESKTOP-QGKSQ0S\SQLEXPRESS</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>Skeleton.sql</FullPath>
+        </FileNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Miscellaneous" Type="3" Sorted="true">
+      <Items />
+    </LogicalFolder>
+  </Items>
+</SqlWorkbenchSqlProject>
