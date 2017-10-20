@@ -80,11 +80,11 @@ SET StartDate = t.FirstMsgDate
 FROM
 Chats AS ch
 INNER JOIN (SELECT c.Id AS ChatId, MIN(m.SentOn) AS FirstMsgDate
-	       FROM Chats AS c
-	       INNER JOIN Messages AS m
-	       ON m.ChatId = c.Id
-	       GROUP BY c.Id
-		  ) AS t
+	    FROM Chats AS c
+	    INNER JOIN Messages AS m
+	    ON m.ChatId = c.Id
+	    GROUP BY c.Id
+	   ) AS t
 ON t.ChatId = ch.Id
 WHERE ch.StartDate > t.FirstMsgDate
 
@@ -152,10 +152,10 @@ WHERE l.Id IS NULL
 SELECT m.Id, m.ChatId, m.UserId
 FROM Messages AS m
 WHERE (m.UserId NOT IN (SELECT uc.UserId 
-				    FROM UsersChats AS uc 
-				    INNER JOIN Messages AS m 
-				    ON uc.ChatId = m.ChatId 
-				    WHERE uc.UserId = m.UserId) 
+		        FROM UsersChats AS uc 
+		        INNER JOIN Messages AS m 
+		        ON uc.ChatId = m.ChatId 
+		        WHERE uc.UserId = m.UserId) 
        OR m.UserId IS NULL) 
 AND m.ChatId = 17
 ORDER BY m.Id DESC
@@ -184,7 +184,7 @@ GO
 CREATE FUNCTION udf_GetRadians (@degrees float)
 RETURNS float
 BEGIN
-   RETURN @degrees * PI() / 180
+     RETURN @degrees * PI() / 180
 END
 GO
 
@@ -196,16 +196,16 @@ GO
 CREATE PROCEDURE udp_ChangePassword(@Email varchar(30), @Password varchar(20))
 AS
 BEGIN
-	IF EXISTS (SELECT * FROM Credentials WHERE Email = @Email)
-	BEGIN
-		UPDATE Credentials
-		SET Password = @Password
-		WHERE Email = @Email
-	END
-	ELSE
-	BEGIN
-		RAISERROR('The email does''t exist!', 16, 1)
-	END
+     IF EXISTS (SELECT * FROM Credentials WHERE Email = @Email)
+     BEGIN
+     	  UPDATE Credentials
+     	  SET Password = @Password
+     	  WHERE Email = @Email
+     END
+     ELSE
+     BEGIN
+     	  RAISERROR('The email does''t exist!', 16, 1)
+     END
 END
 
 EXEC udp_ChangePassword 'abarnes0@sogou.com','new_pass'
@@ -218,12 +218,12 @@ AS
 BEGIN
      IF EXISTS (SELECT * FROM UsersChats WHERE UserId = @userId AND ChatId = @chatId)
      BEGIN
-     	INSERT INTO Messages (UserId, ChatId, Content, SentOn)
-		VALUES (@userId, @chatId, @content, GETDATE())
+     	  INSERT INTO Messages (UserId, ChatId, Content, SentOn)
+	  VALUES (@userId, @chatId, @content, GETDATE())
      END
      ELSE
      BEGIN
-     	RAISERROR('There is no chat with that user!', 16, 1)
+     	  RAISERROR('There is no chat with that user!', 16, 1)
      END
 END
 
