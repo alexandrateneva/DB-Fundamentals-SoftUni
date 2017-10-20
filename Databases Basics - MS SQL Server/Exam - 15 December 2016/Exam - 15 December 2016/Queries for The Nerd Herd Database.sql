@@ -270,4 +270,3 @@ END
 
 DELETE FROM Users
 WHERE Users.Id = 1
-
