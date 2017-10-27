@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.6
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1. Class Box", "1. Class Box\1. Class Box.csproj", "{64317435-73CA-4E2B-AD81-640B2E4A032E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2. Shopping Spree", "2. Shopping Spree\2. Shopping Spree.csproj", "{FB2BD811-3B27-4D07-86A1-4E33CC507F25}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3. Pizza Calories", "3. Pizza Calories\3. Pizza Calories.csproj", "{28BA65A2-FBDC-4EAF-9BB0-1440AB56F82C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{64317435-73CA-4E2B-AD81-640B2E4A032E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64317435-73CA-4E2B-AD81-640B2E4A032E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64317435-73CA-4E2B-AD81-640B2E4A032E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64317435-73CA-4E2B-AD81-640B2E4A032E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB2BD811-3B27-4D07-86A1-4E33CC507F25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB2BD811-3B27-4D07-86A1-4E33CC507F25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB2BD811-3B27-4D07-86A1-4E33CC507F25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB2BD811-3B27-4D07-86A1-4E33CC507F25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28BA65A2-FBDC-4EAF-9BB0-1440AB56F82C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28BA65A2-FBDC-4EAF-9BB0-1440AB56F82C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28BA65A2-FBDC-4EAF-9BB0-1440AB56F82C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28BA65A2-FBDC-4EAF-9BB0-1440AB56F82C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
