@@ -32,17 +32,17 @@
 
 •	Introduction to Entity Framework - Nuget package, Installation, Connection strings, Configuration
 
-•	Code-First - Setting up code-first framework, entities, db context, persisting, fetching, initialization strategies, migrations, database seeding
+•	Code-First - Setting up code-first framework, Entities, DB context, Persisting, Fetching, Initialization strategies, Migrations, Database seeding
 
-•	Entity Relations - Object composition, relational entities, collections, navigation properties, attributes
+•	Entity Relations - Object composition, Relational entities, Collections, Navigation properties, Attributes
 
-•	Advanced Querying - Manipulating how EF accesses data, query optimization, caching, concurrency
+•	Advanced Querying - Manipulating how EF accesses data, Query optimization, Caching, Concurrency
 
-•	Best Practices and Architecture - Code organization patterns, application layers, splitting large codebases
+•	Best Practices and Architecture - Code organization patterns, Application layers, Splitting large codebases
 
 •	C# Auto Mapping Objects - Auto Mapping - data transition objects and domain objects
 
-•	External Format Processing - JSON and XML standard, parsing files, exporting to files, using a framework
+•	External Format Processing - JSON and XML standard, Parsing files, Exporting to files, using a framework
 
 
 
